@@ -168,12 +168,12 @@ class Asteroids extends Floater
   public double getDirectionY(){return myDirectionY;}   
   public void setPointDirection(int degrees){myPointDirection = degrees;}   
   public double getPointDirection(){return myPointDirection;}
-  public void move ()   //move the floater in the current direction of travel
+  public void move()
   {      
     rotate(myRotation);
     super.move();
   }    
-   public void show ()  
+  public void show()  
   {             
     fill(myColor); 
     stroke(myColor);  
