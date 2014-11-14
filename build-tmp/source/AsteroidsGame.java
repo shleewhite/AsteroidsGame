@@ -16,15 +16,21 @@ public class AsteroidsGame extends PApplet {
 
 SpaceShip spaceship;
 Stars sky[];
+Asteroids asteroidBelt[];
 public void setup() 
 {
   size(400, 400);
   background(0);
   spaceship = new SpaceShip();
+  asteroidBelt = new Asteroids[5];
   sky = new Stars[200];
   for (int i = 0; i < sky.length; i ++)
   {
     sky[i] = new Stars();
+  }
+  for (int i = 0; i < asteroidBelt.length; i ++)
+  {
+    asteroidBelt[i] = new Asteroids();
   }
 }
 public void draw() 
@@ -33,6 +39,11 @@ public void draw()
   for (int i = 0; i < sky.length; i++)
   {
     sky[i].show();
+  }
+  for (int i = 0; i < asteroidBelt.length; i++)
+  {
+    asteroidBelt[i].move();
+    asteroidBelt[i].show();
   }
   spaceship.move();
   spaceship.show();
@@ -43,10 +54,17 @@ public void keyPressed()
     else if (keyCode == DOWN){spaceship.accelerate(-0.3f);}
     else if (keyCode == LEFT){spaceship.rotate(10);}
     else if (keyCode == RIGHT){spaceship.rotate(-10);}
+    else if (keyCode == ' ')
+    {
+      spaceship.setX((int)(Math.random()*400));
+      spaceship.setY((int)(Math.random()*400));
+      spaceship.setDirectionX(0);
+      spaceship.setDirectionY(0);
+      spaceship.setPointDirection((int)(Math.random()*360));
+    }
   }
 class SpaceShip extends Floater  
-{   
-
+{  
   SpaceShip()
   {
     corners = 8;
@@ -100,7 +118,7 @@ class SpaceShip extends Floater
       vertex(xRotatedTranslated,yRotatedTranslated);    
     }   
     endShape(CLOSE);  
-  }   
+  }
 }
 
 class Stars
@@ -121,6 +139,73 @@ class Stars
     
   }
 }
+
+class Asteroids extends Floater
+{
+ private int myRotation;
+ public Asteroids()
+  {
+    myRotation = (int)((Math.random()*10) - 5);
+    corners = 9;
+    xCorners = new int[corners];
+    yCorners = new int[corners];
+      xCorners[0] = -2;
+      yCorners[0] = -2;
+      xCorners[1] = 4;
+      yCorners[1] = 8;
+      xCorners[2] = 0;
+      yCorners[2] = 12;
+      xCorners[3] = -8;
+      yCorners[3] = 8;
+      xCorners[4] = -12;
+      yCorners[4] = 0;
+      xCorners[5] = -12;
+      yCorners[5] = -8;
+      xCorners[6] = -8;
+      yCorners[6] = -12;
+      xCorners[7] = 8;
+      yCorners[7] = -8;
+      xCorners[8] = 8;
+      yCorners[8] = 4;
+    myColor = 0xffC0C0C0;
+    myCenterX = 200;
+    myCenterY = 200;
+    myPointDirection = 0;
+    myDirectionX = (double)((Math.random()*6)-3);
+    myDirectionY = (double)((Math.random()*6)-3);
+  }
+  public void setX(int x){myCenterX = x;}
+  public int getX(){return (int)myCenterX;}   
+  public void setY(int y){myCenterY = y;}   
+  public int getY(){return (int)myCenterY;}   
+  public void setDirectionX(double x){myDirectionX = x;}   
+  public double getDirectionX(){return myDirectionX;}
+  public void setDirectionY(double y){myDirectionY = y;}   
+  public double getDirectionY(){return myDirectionY;}   
+  public void setPointDirection(int degrees){myPointDirection = degrees;}   
+  public double getPointDirection(){return myPointDirection;}
+  public void move ()   //move the floater in the current direction of travel
+  {      
+    rotate(myRotation);
+    super.move();
+  }    
+   public void show ()  
+  {             
+    fill(myColor); 
+    stroke(myColor);  
+    double dRadians = myPointDirection*(Math.PI/180);                 
+    int xRotatedTranslated, yRotatedTranslated;    
+    beginShape();         
+    for(int nI = 0; nI < corners; nI++)    
+    {     
+      xRotatedTranslated = (int)((xCorners[nI]* Math.cos(dRadians)) - (yCorners[nI] * Math.sin(dRadians))+myCenterX);     
+      yRotatedTranslated = (int)((xCorners[nI]* Math.sin(dRadians)) + (yCorners[nI] * Math.cos(dRadians))+myCenterY);      
+      vertex(xRotatedTranslated,yRotatedTranslated);    
+    }   
+    endShape(CLOSE);  
+  }   
+}
+
 abstract class Floater
 {   
   protected int corners; 
