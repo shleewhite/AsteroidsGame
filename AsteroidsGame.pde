@@ -1,20 +1,20 @@
 SpaceShip spaceship;
 Stars sky[];
-Asteroids asteroidBelt[];
+ArrayList <Asteroids> asteroidBelt = new ArrayList <Asteroids>();
 public void setup() 
 {
   size(400, 400);
   background(0);
   spaceship = new SpaceShip();
-  asteroidBelt = new Asteroids[5];
+  asteroidBelt.add(new Asteroids());
+  asteroidBelt.add(new Asteroids());
+  asteroidBelt.add(new Asteroids());
+  asteroidBelt.add(new Asteroids());
+  asteroidBelt.add(new Asteroids());
   sky = new Stars[200];
   for (int i = 0; i < sky.length; i ++)
   {
     sky[i] = new Stars();
-  }
-  for (int i = 0; i < asteroidBelt.length; i ++)
-  {
-    asteroidBelt[i] = new Asteroids();
   }
 }
 public void draw() 
@@ -24,10 +24,14 @@ public void draw()
   {
     sky[i].show();
   }
-  for (int i = 0; i < asteroidBelt.length; i++)
+  for (int i = 0; i < asteroidBelt.size(); i++)
   {
-    asteroidBelt[i].move();
-    asteroidBelt[i].show();
+    asteroidBelt.get(i).move();
+    asteroidBelt.get(i).show();
+    if (dist(asteroidBelt.get(i).getX(),asteroidBelt.get(i).getY(),spaceship.getX(),spaceship.getY()) < 20)
+    {
+      asteroidBelt.remove(i);
+    }
   }
   spaceship.move();
   spaceship.show();
@@ -127,8 +131,10 @@ class Stars
 class Asteroids extends Floater
 {
  private int myRotation;
+ private boolean hitShip;
  public Asteroids()
   {
+    hitShip = false;
     myRotation = (int)((Math.random()*10) - 5);
     corners = 9;
     xCorners = new int[corners];
@@ -152,8 +158,9 @@ class Asteroids extends Floater
       xCorners[8] = 8;
       yCorners[8] = 4;
     myColor = #C0C0C0;
-    myCenterX = 200;
-    myCenterY = 200;
+    myCenterX = (int)(Math.random()*400);
+    if (Math.random() < 0.5){myCenterY = 0;}
+    else{myCenterY = 400;}
     myPointDirection = 0;
     myDirectionX = (double)((Math.random()*6)-3);
     myDirectionY = (double)((Math.random()*6)-3);
