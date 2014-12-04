@@ -1,3 +1,4 @@
+boolean gameOver = false;
 SpaceShip spaceship;
 Stars sky[];
 ArrayList <Bullets> pew = new ArrayList <Bullets>();
@@ -21,34 +22,48 @@ public void setup()
 public void draw() 
 {
   background(0);
-  for (int i = 0; i < sky.length; i++)
+  if (gameOver == false)
   {
-    sky[i].show();
-  }
-  for (int i = 0; i < asteroidBelt.size(); i++)
-  {
-    asteroidBelt.get(i).move();
-    asteroidBelt.get(i).show();
-    // if (dist(asteroidBelt.get(i).getX(),asteroidBelt.get(i).getY(),spaceship.getX(),spaceship.getY()) < 20)
-    // {
-    //   asteroidBelt.remove(i);
-    // }
-  }
-  for (int k = 0; k < pew.size(); k++)
-  {
-    pew.get(k).move();
-    pew.get(k).show();
-    for(int j = 0; j < asteroidBelt.size(); j++)
+    for (int i = 0; i < sky.length; i++)
     {
-      if (dist(pew.get(k).getX(),pew.get(k).getY(),asteroidBelt.get(j).getX(),asteroidBelt.get(j).getY()) < 10)
+      sky[i].show();
+    }
+    for (int i = 0; i < asteroidBelt.size(); i++)
+    {
+      asteroidBelt.get(i).move();
+      asteroidBelt.get(i).show();
+    }
+    for (int k = 0; k < pew.size(); k++)
+    {
+      pew.get(k).move();
+      pew.get(k).show();
+      for(int j = 0; j < asteroidBelt.size(); j++)
       {
-        asteroidBelt.remove(j);
-        pew.remove(k);
-      } 
-    }    
+        if (dist(pew.get(k).getX(),pew.get(k).getY(),asteroidBelt.get(j).getX(),asteroidBelt.get(j).getY()) < 10)
+        {
+          asteroidBelt.remove(j);
+          pew.remove(k);
+        } 
+      }    
+    }
+    spaceship.move();
+    for (int i = 0; i < asteroidBelt.size(); i++)
+    {
+      if (dist(spaceship.getX(), spaceship.getY(), asteroidBelt.get(i).getX(), asteroidBelt.get(i).getY()) < 20)
+      {
+        gameOver = true;
+      }
+    }
+    spaceship.show();
   }
-  spaceship.move();
-  spaceship.show();
+  else if (gameOver == true)
+  {
+    background(0);
+    textSize(70);
+    fill(255, 0, 0);
+    text("GAME OVER", 0, 200);
+  }
+    
 }
 public void keyPressed()
   {
