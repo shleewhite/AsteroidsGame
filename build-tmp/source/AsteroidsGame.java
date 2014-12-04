@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class AsteroidsGame extends PApplet {
 
-boolean gameOver = false; //need to make if statement with all of the move stuff for if false but if the spaceship hits asteroid then game over
+boolean gameOver = false;
 SpaceShip spaceship;
 Stars sky[];
 ArrayList <Bullets> pew = new ArrayList <Bullets>();

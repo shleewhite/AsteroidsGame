@@ -59,7 +59,7 @@ public void draw()
   else if (gameOver == true)
   {
     background(0);
-    textSize(70);
+    textSize(65);
     fill(255, 0, 0);
     text("GAME OVER", 0, 200);
   }
